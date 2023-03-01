@@ -1,0 +1,25 @@
+#To restrict certain commands on the Kubernetes cluster, we can use RBAC (Role-Based Access Control) and create a Role with the appropriate permissions, as follows:
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: deployment-operator
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployment-operator-binding
+  namespace: default
+subjects:
+- kind: User
+  name: dev-team
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: deployment-operator
+  apiGroup: rbac.authorization.k8s.io

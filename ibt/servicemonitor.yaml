@@ -1,0 +1,30 @@
+#2. Create a ServiceMonitor for users and shifts Deployments:
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: users-monitor
+  namespace: default
+spec:
+  endpoints:
+  - port: http
+    interval: 15s
+    path: /metrics
+    scheme: http
+  selector:
+    matchLabels:
+      app: users-api
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: shifts-monitor
+  namespace: default
+spec:
+  endpoints:
+  - port: http
+    interval: 15s
+    path: /metrics
+    scheme: http
+  selector:
+    matchLabels:
+      app: shifts-api

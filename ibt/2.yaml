@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shifts-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shifts
+  template:
+    metadata:
+      labels:
+        app: shifts
+    spec:
+      containers:
+      - name: shifts-container
+        image: php:7.4-apache
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: db-shifts
+        - name: DB_NAME
+          value: shifts-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shifts-service
+spec:
+  selector:
+    app: shifts
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
